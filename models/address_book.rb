@@ -1,5 +1,5 @@
 require_relative 'entry'
-require "csv"
+require 'csv'
 
 class AddressBook
   attr_reader :entries
@@ -11,9 +11,7 @@ class AddressBook
   def add_entry(name, phone_number, email)
     index = 0
     entries.each do |entry|
-      if name < entry.name
-        break
-      end
+      break if name < entry.name
       index += 1
     end
     entries.insert(index, Entry.new(name, phone_number, email))
@@ -25,7 +23,7 @@ class AddressBook
 
     csv.each do |row|
       row_hash = row.to_hash
-      add_entry(row_hash["name"], row_hash["phone_number"], row_hash["email"])
+      add_entry(row_hash['name'], row_hash['phone_number'], row_hash['email'])
     end
   end
 
@@ -39,11 +37,21 @@ class AddressBook
       if name == mid_name
         return entries[mid]
       elsif name < mid_name
-        upper = mid -1
+        upper = mid - 1
       elsif name > mid_name
-        lower = mid +1
+        lower = mid + 1
       end
     end
-    return nil
+    nil
+  end
+
+  def iterative_search(name)
+    index = 0
+
+    while index < entries.length
+      return entries[index] if name == entries[index].name
+      index += 1
+    end
+    nil
   end
 end
